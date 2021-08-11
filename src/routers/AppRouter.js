@@ -6,7 +6,6 @@ import {
     Redirect,
 } from "react-router-dom";
 import { LoginScreen } from '../components/auth/LoginScreen';
-import { RegisterScreen } from '../components/auth/RegisterScreen';
 import { CalendarScreen } from '../components/calendar/CalendarScreen';
 
 export const AppRouter = () => {
@@ -17,10 +16,6 @@ export const AppRouter = () => {
                     <Route path="/login"
                         exact
                         component={LoginScreen}>
-                    </Route>
-                    <Route path="/register"
-                        exact
-                        component={RegisterScreen}>
                     </Route>
                     <Route path="/"
                         exact
