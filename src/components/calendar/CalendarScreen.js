@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavBar } from '../ui/NavBar';
 import { CalendarEvent } from './CalendarEvent';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
@@ -32,15 +32,18 @@ const myEventsList = [{
 
 export const CalendarScreen = () => {
 
+    const [lastView, setlastView] = useState(localStorage.getItem('lastView') || 'month')
+
     const onViewChange = (e) => {
-        console.log(e)
+        setlastView(e);
+        localStorage.setItem('lastView',e);
     }
     const onDoubleClick = (e) => {
         console.log(e);
     }
 
     const onSelectEvent = (e) => {
-        localStorage.setItem('lastView',e);
+        console.log(e);
     }
     const eventStyleGetter = (event, start, end, isSelected) => {
         const style = {
@@ -68,6 +71,7 @@ export const CalendarScreen = () => {
                 onDoubleClickEvent = {onDoubleClick}
                 onSelectEvent = {onSelectEvent}
                 onView = {onViewChange}
+                view = {lastView}
                 components={{
                     event: CalendarEvent
                 }}
