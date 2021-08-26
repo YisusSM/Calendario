@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { NavBar } from '../ui/NavBar';
+import { AddNewFab } from '../ui/AddNewFab';
 import { uiOpenModal } from '../../actions/ui';
 import { CalendarEvent } from './CalendarEvent';
 import { messages } from '../../helpers/calendar-messages-español';
@@ -28,24 +29,25 @@ const myEventsList = [{
     }
 }]
 export const CalendarScreen = () => {
-    
+
     // const {modalOpen} = useSelector(state => state.ui)
     const dispatch = useDispatch();
     const [lastView, setlastView] = useState(localStorage.getItem('lastView') || 'month')
 
     const onViewChange = (e) => {
         setlastView(e);
-        localStorage.setItem('lastView',e);
+        localStorage.setItem('lastView', e);
     }
     const onDoubleClick = (e) => {
-        
+
         dispatch(uiOpenModal());
-       
+
     }
 
     const onSelectEvent = (e) => {
-        
+
         dispatch(eventSetActive(e));
+        dispatch(uiOpenModal());
     }
     const eventStyleGetter = (event, start, end, isSelected) => {
         const style = {
@@ -70,15 +72,18 @@ export const CalendarScreen = () => {
                 messages={messages}
                 style={{ height: 500 }}
                 eventPropGetter={eventStyleGetter}
-                onDoubleClickEvent = {onDoubleClick}
-                onSelectEvent = {onSelectEvent}
-                onView = {onViewChange}
-                view = {lastView}
+                onDoubleClickEvent={onDoubleClick}
+                onSelectEvent={onSelectEvent}
+                onView={onViewChange}
+                view={lastView}
                 components={{
                     event: CalendarEvent
                 }}
             />
-            <CalendarModal/>
+            
+                <AddNewFab/>
+
+            <CalendarModal />
         </div>
     )
 }
