@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+
 import { NavBar } from '../ui/NavBar';
 import { uiOpenModal } from '../../actions/ui';
 import { CalendarEvent } from './CalendarEvent';
 import { messages } from '../../helpers/calendar-messages-español';
 import { CalendarModal } from './CalendarModal';
+
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment/locale/es';
@@ -22,15 +24,7 @@ const myEventsList = [{
     user: {
         _id: '123',
         name: 'jesus',
-    },
-    notes: [{
-        active: false,
-        text: "comprar pastel"
-    },
-    {
-        active: true,
-        text: "comprar agua"
-    }]
+    }
 }]
 export const CalendarScreen = () => {
     
