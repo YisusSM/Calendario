@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { uiCloseModal } from '../../actions/ui';
+import { eventAddNew } from '../../actions/events';
 
 import Modal from 'react-modal';
 import DateTimePicker from 'react-datetime-picker';
@@ -90,6 +91,11 @@ export const CalendarModal = () => {
         }
 
         //TODO realizar grabación a bd
+        dispatch(eventAddNew({
+            ...formValues,
+            id: new Date().getTime()
+        }));
+
         setTitleValid(true);
         closeModal();
 
