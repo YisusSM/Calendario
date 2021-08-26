@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavBar } from '../ui/NavBar';
 import { DeleteEventFab } from '../ui/DeleteEvenFab';
 import { AddNewFab } from '../ui/AddNewFab';
+import { eventClearActiveEvent, eventSetActive } from '../../actions/events';
 import { uiOpenModal } from '../../actions/ui';
 import { CalendarEvent } from './CalendarEvent';
 import { messages } from '../../helpers/calendar-messages-español';
@@ -13,7 +14,6 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment/locale/es';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { eventSetActive } from '../../actions/events';
 
 
 moment.locale('es');
@@ -65,6 +65,10 @@ export const CalendarScreen = () => {
             style
         }
     };
+
+    const onSelectSlot = (e) => {
+        dispatch(eventClearActiveEvent());
+    }
     return (
         <div className="calendar-screen">
             <NavBar />
@@ -79,6 +83,8 @@ export const CalendarScreen = () => {
                 onDoubleClickEvent={onDoubleClick}
                 onSelectEvent={onSelectEvent}
                 onView={onViewChange}
+                onSelectSlot = {onSelectSlot}
+                selectable = {true}
                 view={lastView}
                 components={{
                     event: CalendarEvent
