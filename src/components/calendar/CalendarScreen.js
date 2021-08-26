@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavBar } from '../ui/NavBar';
-import { CalendarModal } from './CalendarModal';
-import { messages } from '../../helpers/calendar-messages-español';
+import { uiOpenModal } from '../../actions/ui';
 import { CalendarEvent } from './CalendarEvent';
+import { messages } from '../../helpers/calendar-messages-español';
+import { CalendarModal } from './CalendarModal';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment/locale/es';
@@ -30,9 +32,10 @@ const myEventsList = [{
         text: "comprar agua"
     }]
 }]
-
 export const CalendarScreen = () => {
-
+    
+    // const {modalOpen} = useSelector(state => state.ui)
+    const dispatch = useDispatch();
     const [lastView, setlastView] = useState(localStorage.getItem('lastView') || 'month')
 
     const onViewChange = (e) => {
@@ -40,7 +43,8 @@ export const CalendarScreen = () => {
         localStorage.setItem('lastView',e);
     }
     const onDoubleClick = (e) => {
-        console.log(e);
+        
+        dispatch(uiOpenModal());
     }
 
     const onSelectEvent = (e) => {
