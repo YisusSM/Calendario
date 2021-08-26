@@ -11,6 +11,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment/locale/es';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { eventSetActive } from '../../actions/events';
 
 
 moment.locale('es');
@@ -39,10 +40,12 @@ export const CalendarScreen = () => {
     const onDoubleClick = (e) => {
         
         dispatch(uiOpenModal());
+       
     }
 
     const onSelectEvent = (e) => {
-        console.log(e);
+        
+        dispatch(eventSetActive(e));
     }
     const eventStyleGetter = (event, start, end, isSelected) => {
         const style = {
