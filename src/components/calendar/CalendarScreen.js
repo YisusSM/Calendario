@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { NavBar } from '../ui/NavBar';
+import { DeleteEventFab } from '../ui/DeleteEvenFab';
 import { AddNewFab } from '../ui/AddNewFab';
 import { uiOpenModal } from '../../actions/ui';
 import { CalendarEvent } from './CalendarEvent';
@@ -30,7 +31,7 @@ const localizer = momentLocalizer(moment)
 //     }
 // }]
 export const CalendarScreen = () => {
-    const {events} = useSelector(state => state.calendar)
+    const {events,activeEvent} = useSelector(state => state.calendar)
 
 
     // const {modalOpen} = useSelector(state => state.ui)
@@ -85,6 +86,7 @@ export const CalendarScreen = () => {
             />
             
                 <AddNewFab/>
+                {(activeEvent)&&<DeleteEventFab/>}
 
             <CalendarModal />
         </div>
