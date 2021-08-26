@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { NavBar } from '../ui/NavBar';
 import { AddNewFab } from '../ui/AddNewFab';
@@ -17,18 +17,21 @@ import { eventSetActive } from '../../actions/events';
 
 moment.locale('es');
 const localizer = momentLocalizer(moment)
-const myEventsList = [{
-    title: 'Entrevista',
-    body: 'comentarios',
-    start: moment().toDate(),
-    end: moment().add(2, 'hour').toDate(),
-    bgcolor: '#fafafa',
-    user: {
-        _id: '123',
-        name: 'jesus',
-    }
-}]
+
+// const myEventsList = [{
+//     title: 'Entrevista',
+//     body: 'comentarios',
+//     start: moment().toDate(),
+//     end: moment().add(2, 'hour').toDate(),
+//     bgcolor: '#fafafa',
+//     user: {
+//         _id: '123',
+//         name: 'jesus',
+//     }
+// }]
 export const CalendarScreen = () => {
+    const {events} = useSelector(state => state.calendar)
+
 
     // const {modalOpen} = useSelector(state => state.ui)
     const dispatch = useDispatch();
@@ -47,7 +50,7 @@ export const CalendarScreen = () => {
     const onSelectEvent = (e) => {
 
         dispatch(eventSetActive(e));
-        dispatch(uiOpenModal());
+        
     }
     const eventStyleGetter = (event, start, end, isSelected) => {
         const style = {
@@ -66,7 +69,7 @@ export const CalendarScreen = () => {
             <NavBar />
             <Calendar
                 localizer={localizer}
-                events={myEventsList}
+                events={events}
                 startAccessor="start"
                 endAccessor="end"
                 messages={messages}
