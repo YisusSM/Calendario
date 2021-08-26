@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { uiCloseModal } from '../../actions/ui';
-import { eventAddNew } from '../../actions/events';
+import { eventAddNew, eventClearActiveEvent, eventUpdate } from '../../actions/events';
 
 import Modal from 'react-modal';
 import DateTimePicker from 'react-datetime-picker';
@@ -50,12 +50,12 @@ export const CalendarModal = () => {
     const { notes, title, start, end } = formValues;
 
     useEffect(() => {
-        
+
         if (activeEvent) {
             setFormValues(activeEvent);
         }
 
-    }, [activeEvent,setFormValues])
+    }, [activeEvent, setFormValues])
 
     const handleInputChange = ({ target }) => {
         setFormValues({
@@ -82,6 +82,7 @@ export const CalendarModal = () => {
     const closeModal = () => {
         //TODO cerrar modal
         dispatch(uiCloseModal());
+        dispatch(eventClearActiveEvent());
         setFormValues(initEvent);
     }
 
@@ -101,15 +102,20 @@ export const CalendarModal = () => {
         }
 
         //TODO realizar grabación a bd
-        dispatch(eventAddNew({
-            ...formValues,
-            id: new Date().getTime(),
-            user: {
-                _id: '123',
-                name: 'Jesus'
-            }
+        if (activeEvent) {
+            dispatch(eventUpdate(formValues));
+        } else {
+            dispatch(eventAddNew({
+                ...formValues,
+                id: new Date().getTime(),
+                user: {
+                    _id: '123',
+                    name: 'Jesus'
+                }
 
-        }));
+            }));
+        }
+
 
         setTitleValid(true);
         closeModal();

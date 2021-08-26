@@ -3,8 +3,9 @@ import { types } from '../types/types';
 
 const initialState = {
     events: [{
+        id: new Date().getTime(),
         title: 'Entrevista',
-        body: 'comentarios',
+        notes: 'arreglarse',
         start: moment().toDate(),
         end: moment().add(2, 'hour').toDate(),
         bgcolor: '#fafafa',
@@ -32,8 +33,21 @@ export const calendarReducer = (state = initialState, action) => {
                     ...state.events,
                     action.payload
                 ]
-            }
+            };
 
+        case types.eventClearActiveEvent:
+            return {
+                ...state,
+                activeEvent: null
+            };
+
+        case types.eventUpdate:
+            return {
+                ...state,
+                events: state.events.map(
+                    e => (e.id === action.payload.id)? action.payload : e
+                )
+            };
         default:
             return state;
     }
