@@ -3,12 +3,13 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { uiCloseModal } from '../../actions/ui';
-import { eventAddNew, eventClearActiveEvent, eventUpdate } from '../../actions/events';
+import { eventClearActiveEvent, eventStartAddNew, eventUpdated} from '../../actions/events';
 
 import Modal from 'react-modal';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
 import Swal from 'sweetalert2';
+
 
 
 const customStyles = {
@@ -52,7 +53,9 @@ export const CalendarModal = () => {
     useEffect(() => {
 
         if (activeEvent) {
+
             setFormValues(activeEvent);
+
         } else {
             setFormValues(initEvent);
         }
@@ -68,13 +71,28 @@ export const CalendarModal = () => {
     // console.log(dateEnd)
 
     const handleStartDateChange = (e) => {
-        setDateStart(e);
-        setFormValues({
-            ...formValues,
-            start: e
-        })
+        if (activeEvent) {
+            activeEvent.start = e
+            setFormValues({
+                ...formValues,
+                start: activeEvent.start
+            })
+        } else {
+            setDateStart(e);
+            setFormValues({
+                ...formValues,
+                start: e
+            })
+        }
     }
     const handleEndDateChange = (e) => {
+        if (activeEvent) {
+            activeEvent.end = e
+            setFormValues({
+                ...formValues,
+                start: activeEvent.end
+            })
+        }
         setDateEnd(e);
         setFormValues({
             ...formValues,
@@ -89,14 +107,13 @@ export const CalendarModal = () => {
     }
 
     const handleSubmitForm = (e) => {
-        console.log('object')
         e.preventDefault();
-        const momentStart = moment(start);
-        const momentEnd = moment(end);
-
+        var momentStart = moment(start);
+        var momentEnd = moment(end);
 
         if (momentStart.isSameOrAfter(momentEnd)) {
             return Swal.fire('Error', 'Fecha de finalización no puede ser menor o igual a la de inicio...', 'error');
+
         }
 
         if (title.length < 2) {
@@ -105,17 +122,9 @@ export const CalendarModal = () => {
 
         //TODO realizar grabación a bd
         if (activeEvent) {
-            dispatch(eventUpdate(formValues));
+            dispatch(eventUpdated(formValues));
         } else {
-            dispatch(eventAddNew({
-                ...formValues,
-                id: new Date().getTime(),
-                user: {
-                    _id: '123',
-                    name: 'Jesus'
-                }
-
-            }));
+            dispatch(eventStartAddNew(formValues));
         }
 
 
@@ -124,7 +133,7 @@ export const CalendarModal = () => {
 
     }
 
-    console.log(titleValid, title);
+    // console.log(titleValid, title);
     return (
         <Modal
             isOpen={modalOpen}
@@ -135,7 +144,7 @@ export const CalendarModal = () => {
             className="modal"
             overlayClassName="modal-fondo"
         >
-            <h1> {(activeEvent)? "Editar Evento": "Nuevo evento"} </h1>
+            <h1> {(activeEvent) ? "Editar Evento" : "Nuevo evento"} </h1>
             <hr />
             <form className="container"
                 onSubmit={handleSubmitForm}
@@ -145,7 +154,7 @@ export const CalendarModal = () => {
                     <label>Fecha y hora inicio</label>
                     <DateTimePicker
                         onChange={handleStartDateChange}
-                        value={dateStart}
+                        value={(activeEvent) ? activeEvent.start : dateStart}
                         format="y-MM-dd h:mm:ss a"
                         amPmAriaLabel="Select AM/PM"
                         className="form-control"
@@ -157,7 +166,7 @@ export const CalendarModal = () => {
                     <label>Fecha y hora fin</label>
                     <DateTimePicker
                         onChange={handleEndDateChange}
-                        value={dateEnd}
+                        value={(activeEvent) ? activeEvent.end : dateEnd}
                         minDate={dateStart}
                         format="y-MM-dd h:mm:ss a"
                         amPmAriaLabel="Select AM/PM"

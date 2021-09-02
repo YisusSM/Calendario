@@ -10,10 +10,14 @@ export const AddNewFab = () => {
         <div>
             <button
                 className="btn btn-primary fab"
-                onClick = { () => dispatch(uiOpenModal()) }>
+                onClick = { () => dispatch(uiOpenModal()) }
+                value = "ss">
                 <i
-                    className="fas fa-plus "></i>
+                    className="fas fa-plus "
+                    role = "button"></i>
             </button>
+
+            
         </div>
     )
 }
