@@ -9,16 +9,8 @@ import Swal from 'sweetalert2';
 
 export const LoginScreen = () => {
     const dispatch = useDispatch();
-    const [formLoginValues, handleLoginInputChange] = useForm({
-        lEmail: 'jesussm_0005@hotmail.com',
-        lPassword: 'notiene'
-    });
-    const [formRegisterValues, handleRegisterInputChange] = useForm({
-        rEmail: 'karl@hotmail.com',
-        rPassword: 'notiene',
-        rPasswordConfirmed: 'notiene',
-        rName: 'Karl'
-    });
+    const [formLoginValues, handleLoginInputChange] = useForm();
+    const [formRegisterValues, handleRegisterInputChange] = useForm();
 
     const { rEmail, rPassword, rPasswordConfirmed, rName } = formRegisterValues;
     const { lEmail, lPassword } = formLoginValues;
